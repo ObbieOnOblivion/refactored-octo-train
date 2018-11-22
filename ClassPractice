@@ -1,0 +1,223 @@
+
+"""just learned about inheriting classes and the super or parent class"""
+
+class Employee:
+    """Class that represent developers and interacts with developers of "Company"
+    
+    """
+
+    Raise_amount = 1.04
+
+    @classmethod
+    def Show_raise_rate(cls):
+
+        """this opens a tkinter tab to show you your pay"""
+
+        # insert raise amount in text box
+        def click():
+            """ this will insert pay along with history of requests"""
+
+            import time # i stored local time because i cant download pytz module
+            Raise = cls.Raise_amount
+
+            text1.insert(0.0, f'Employee raise amount: [{Raise}]\n\n')
+
+            text1.insert(0.0, time.strftime('%Y-%b-%d (%A) [%H:%M:%S]\n'))
+
+        import tkinter
+        mainwindow = tkinter.Tk()
+        mainwindow.title('Employee')
+        mainwindow.configure(background='green')
+        # label for raise amount
+        tkinter.Label(mainwindow, text='your raise rate', bg= 'green',
+                      fg='yellow').grid(column=0, row=0)
+        # button to display text
+        button1 = tkinter.Button(mainwindow, text='display Employee\'s raise rate',
+                                 command = click)
+        button1.grid(column=0, row=1)
+        button1.configure(background= 'green')
+        # displaying text
+        text1= tkinter.Text(mainwindow, fg= 'green')
+        text1.configure(background= 'yellow')
+        text1.grid(column=0, row=2)
+
+        mainwindow.rowconfigure(0, weight=1)
+
+        mainwindow.mainloop()
+
+
+    def __init__(self, first, last, pay):
+        """
+        :param first: first name of participant
+        :param last: last name of participant
+        :param pay: the yearly salary of participant
+        """
+        self.first = first
+        self.last = last
+        self.pay = int(pay)
+
+    def full_name(self):
+        """
+        :return: this returns the full name of participant
+        """
+        return f'{self.first} {self.last}'
+
+    def email(self):
+        """
+        :return: participant company email
+        """
+        print(f'{self.first}.{self.last}@company.com')
+
+    def apply_raise_amount(self):
+        """
+        :return: this updates the participants pay
+        """
+        self.pay = int(self.pay * self.Raise_amount)
+
+
+
+""" instances of this class """
+jeffery = Employee('jeffery', 'colmes', 65000)
+alex = Employee('Alexandra', 'jose', 63000)
+jami = Employee('Jamilex', 'anderson', 71000)
+
+
+class Developer(Employee):
+
+    """ Class that represent developers and interacts with developers of "Company"
+
+    """
+    Raise_amount = 1.11
+
+    @classmethod
+    def Show_raise_rate(cls):
+        """this opens a tkinter tab to show you your pay"""
+
+        def click1():
+            """ this will insert pay along with history of requests"""
+            import time
+            frank = cls.Raise_amount
+
+            der = text1.insert(0.0, f'Developer\'s raise amount: [{frank}]\n\n')
+
+            pop = text1.insert(0.0, time.strftime('%Y-%b-%d (%A) [%H:%M:%S]\n'))
+
+        import tkinter
+        mainwindow = tkinter.Tk()
+        mainwindow.title('Developer')
+        mainwindow.configure(background='green')
+        # label for raise amount
+        tkinter.Label(mainwindow, text='Developers raise rate', bg= 'green',
+                      fg='yellow').grid(column=0, row=0)
+        # button to display text
+        button1 = tkinter.Button(mainwindow, text='display Developers raise rate',
+                                 command = click1)
+        button1.grid(column=0, row=1)
+        button1.configure(background= 'green')
+        # displaying text
+        text1= tkinter.Text(mainwindow, fg= 'green')
+        text1.configure(background= 'yellow')
+        text1.grid(column=0, row=2)
+
+        mainwindow.rowconfigure(0, weight=1)
+
+        mainwindow.mainloop()
+
+    def __init__(self, first, last, pay, prog_lang):
+        """
+
+        :param first: first name of participant
+        :param last: last name of participant
+        :param pay: the yearly salary of participant
+        :param prog_lang: the prefered programming language of participant
+        """
+        super().__init__(first, last, pay)
+        self.prog_lang = prog_lang
+
+    def show_salary(self):
+        """this prints salary of participant"""
+        def click2():
+            salary = f'[{self.full_name()}] pay: {self.pay}$'
+            text1.delete(0.0, 6.6)
+            text1.insert(0.0, salary)
+
+
+        import tkinter
+        mainwindow = tkinter.Tk()
+        mainwindow.title('Company')
+        mainwindow.configure(background='green')
+        # label for raise amount
+        tkinter.Label(mainwindow, text='your salary', bg= 'green',
+                      fg='yellow').grid(column=0, row=0)
+        # button to display text
+        button1 = tkinter.Button(mainwindow, text='display salary',
+                                 command = click2)
+        button1.grid(column=0, row=1)
+        button1.configure(background= 'green')
+        # displaying text
+        text1= tkinter.Text(mainwindow, fg= 'green')
+        text1.configure(background= 'yellow')
+        text1.grid(column=0, row=2)
+
+        mainwindow.rowconfigure(0, weight=1)
+
+        mainwindow.mainloop()
+
+# there is more developers than employees
+Obbie = Developer("abdurahman", "omoruyi", 110000, 'Ruby')
+jason = Developer('Jason', 'borne', 99000, 'C#')
+huston = Developer('Huston', 'kamila', 96000, "PHP")
+kamila = Developer('kamila', 'rose', 120000, 'node js')
+liam = Developer("liam", "bradly", 88000, "Maude system")
+Kelly = Developer('Kelly', 'james', 95000, 'Opa')
+Max = Developer('maxwell', 'morgan', 100000, "Swift")
+
+
+class Manager(Employee):
+    """ Class that represent managers and interacts with managers of "Company"
+    """
+    def __init__(self, first, last, pay, employees=None):
+        """
+
+        :param first: first name of participant
+        :param last: last name of participant
+        :param pay: the yearly salary of participant
+        :param employees: the developers they manage
+        """
+        super().__init__(first, last, pay)
+        if employees is None:
+            self.employees = []
+        else:
+            self.employees = employees
+
+    def add_employee(self, emp):
+        """
+        :param emp: the developer or participant
+        :return: this adds this developer or participant to the managers roster
+        """
+        if emp not in self.employees:
+            self.employees.append(emp)
+
+    def take_out_emp(self, emp):
+        """
+        :param emp: the developer or participant
+        :return: this removes this developer or participant to the managers roster
+        """
+        if emp in self.employees:
+            self.employees.remove(emp)
+
+
+    def print_emps(self):
+        """
+        :return: prints employees the manager has on her roster
+        """
+        for emp in self.employees:
+            if emp: # make sure that None is not being returned
+                print(emp.full_name())
+
+
+sue = Manager('sue', 'anderson', 100000, [Obbie, jason, huston,
+                                          kamila, liam, Kelly, Max])
+
+
+
